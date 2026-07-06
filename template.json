@@ -1,0 +1,9 @@
+{
+  "id": "python-django-template",
+  "runtime": "python",
+  "framework": "Django",
+  "engineering_level": "advanced_template",
+  "upstreams": ["cookiecutter-django"],
+  "entrypoint": "manage.py",
+  "architecture": ["django_project", "settings_split", "custom_user", "celery_ready"]
+}
