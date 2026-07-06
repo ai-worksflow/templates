@@ -37,6 +37,7 @@ body {
 
 .app-content {
   padding: 24px;
+  min-width: 0;
 }
 
 .page-stack {
@@ -48,6 +49,17 @@ body {
   justify-content: space-between;
   gap: 16px;
   align-items: center;
+}
+
+.ant-card,
+.ant-card-body,
+.ant-table-wrapper {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ant-card-body {
+  overflow-x: auto;
 }
 
 @media (max-width: 760px) {
