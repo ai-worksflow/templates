@@ -14,8 +14,17 @@ Advanced Node.js backend template using NestJS directly.
 ```bash
 npm install
 npm test
+npm run build
 npm run start:dev
 ```
+
+The production start command uses `PORT`:
+
+```bash
+PORT=3001 npm start
+```
+
+`package.json` includes an npm override for `multer` so production dependency audit remains clean while using `@nestjs/platform-express`.
 
 ## Structure
 
