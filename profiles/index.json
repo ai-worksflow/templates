@@ -1,0 +1,80 @@
+{
+  "contract_version": "0.2.0",
+  "template_id": "go-kratos-template",
+  "runtime": "go",
+  "framework": "Kratos",
+  "profile_contract_version": "0.2.0",
+  "extension_points": {
+    "api_proto": "api/{module}/v1/{module}.proto",
+    "biz": "internal/biz/{module}.go",
+    "data": "internal/data/{module}_repo.go",
+    "service": "internal/service/{module}.go",
+    "http_server": "internal/server/http.go",
+    "grpc_server": "internal/server/grpc.go",
+    "config": "configs/config.yaml",
+    "tests": "internal/biz/{module}_test.go"
+  },
+  "module_layers": ["api_proto", "biz", "data", "service"],
+  "profiles": {
+    "traditional_web": {
+      "fit": "secondary",
+      "runtime_role": "business_microservice",
+      "modules": ["content", "workflow", "notification", "audit"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub"],
+      "implementation_order": ["content", "workflow", "audit", "notification"],
+      "events": ["content.published", "workflow.approved", "workflow.rejected", "notification.requested"],
+      "jobs": ["send_notification", "expire_pending_workflow", "audit_export"],
+      "data_boundaries": ["postgres", "redis_cache", "object_storage"],
+      "notes": ["Use for decomposed business capabilities, not for monolithic admin-first systems."]
+    },
+    "commerce": {
+      "fit": "supported",
+      "runtime_role": "commerce_microservice",
+      "modules": ["catalog", "pricing", "cart", "order", "payment", "inventory", "fulfillment"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub", "rate_limit"],
+      "implementation_order": ["catalog", "pricing", "inventory", "cart", "order", "payment", "fulfillment"],
+      "events": ["cart.checked_out", "order.created", "payment.authorized", "payment.failed", "inventory.reserved", "fulfillment.shipped"],
+      "jobs": ["payment_callback_reconcile", "inventory_reservation_expire", "order_timeout_cancel", "fulfillment_sync"],
+      "data_boundaries": ["postgres", "redis_cache", "message_queue", "payment_provider", "search_index"],
+      "notes": ["Use proto contracts for service-to-service commerce APIs and HTTP for external callbacks."]
+    },
+    "video_platform": {
+      "fit": "recommended",
+      "runtime_role": "cloud_native_video_microservice",
+      "modules": ["asset", "upload", "transcode", "playback", "entitlement", "moderation"],
+      "protocols": ["http", "realtime", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub", "rate_limit"],
+      "implementation_order": ["asset", "upload", "transcode", "playback", "entitlement", "moderation"],
+      "events": ["asset.created", "upload.completed", "transcode.requested", "transcode.completed", "playback.started", "moderation.flagged"],
+      "jobs": ["transcode_worker", "thumbnail_extract", "manifest_package", "cdn_purge", "moderation_scan"],
+      "data_boundaries": ["postgres", "object_storage", "message_queue", "cdn", "transcode_provider"],
+      "notes": ["Keep asset, transcode, and playback contracts explicit in api/{module}/v1 before splitting services."]
+    },
+    "game_backend": {
+      "fit": "recommended",
+      "runtime_role": "cloud_native_game_microservice",
+      "modules": ["player", "session", "matchmaking", "inventory", "economy", "leaderboard", "telemetry"],
+      "protocols": ["http", "realtime", "events"],
+      "middleware": ["request_id", "logging", "timing", "auth_stub", "rate_limit"],
+      "implementation_order": ["player", "session", "matchmaking", "inventory", "economy", "leaderboard", "telemetry"],
+      "events": ["session.created", "matchmaking.ticket_created", "matchmaking.matched", "inventory.granted", "economy.transaction_posted", "leaderboard.score_submitted"],
+      "jobs": ["matchmaking_tick", "session_timeout_sweep", "leaderboard_rollover", "telemetry_flush"],
+      "data_boundaries": ["redis_cache", "postgres", "message_queue", "analytics_sink"],
+      "notes": ["Use Kratos when game domains are split into several services with explicit transport contracts."]
+    },
+    "saas_multitenant": {
+      "fit": "supported",
+      "runtime_role": "platform_microservice",
+      "modules": ["tenant", "workspace", "permission", "subscription", "billing", "usage", "integration", "audit"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub", "rate_limit"],
+      "implementation_order": ["tenant", "workspace", "permission", "subscription", "billing", "usage", "integration", "audit"],
+      "events": ["tenant.created", "workspace.member_invited", "permission.role_changed", "subscription.changed", "usage.recorded", "billing.webhook_received"],
+      "jobs": ["usage_rollup", "invoice_sync", "webhook_delivery", "audit_export", "quota_refresh"],
+      "data_boundaries": ["postgres", "redis_cache", "message_queue", "billing_provider", "email_provider"],
+      "notes": ["Use this for platform services where tenancy and service contracts need cloud-native governance."]
+    }
+  }
+}

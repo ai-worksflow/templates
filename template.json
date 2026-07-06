@@ -2,8 +2,12 @@
   "id": "go-kratos-template",
   "runtime": "go",
   "framework": "Kratos",
-  "engineering_level": "advanced_template",
+  "engineering_level": "template",
   "upstreams": ["kratos"],
+  "profile_manifest": "profiles/index.json",
+  "engineering_spec": "docs/ENGINEERING_SPEC.md",
+  "profiles": ["traditional_web", "commerce", "video_platform", "game_backend", "saas_multitenant"],
+  "recommended_profiles": ["video_platform", "game_backend"],
   "entrypoint": "./cmd/server",
   "test": "go test ./...",
   "architecture": ["cloud_native_microservice", "transport_layer", "biz_data_service"]

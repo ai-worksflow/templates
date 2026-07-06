@@ -27,4 +27,12 @@ api/               Proto/OpenAPI contract location.
 configs/           Runtime configs.
 ```
 
+## Profiles And Engineering Rules
+
+- Product profiles live in `profiles/index.json`.
+- Framework-specific engineering rules live in `docs/ENGINEERING_SPEC.md`.
+- Recommended profiles: `video_platform`, `game_backend`.
+- Supported profiles: `commerce`, `saas_multitenant`.
+- Secondary profile: `traditional_web`.
+
 This template keeps Kratos as a framework dependency and leaves protobuf code generation as an explicit next step for real services.
