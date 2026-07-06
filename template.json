@@ -1,0 +1,14 @@
+{
+  "id": "react-antd-template",
+  "framework": "React",
+  "ui": "Ant Design",
+  "language": "TypeScript",
+  "build_tool": "Vite",
+  "profile_manifest": "profiles/index.json",
+  "engineering_spec": "docs/ENGINEERING_SPEC.md",
+  "recommended_profiles": ["admin_console", "saas_console"],
+  "supported_profiles": ["commerce_storefront", "media_dashboard", "content_site"],
+  "entrypoint": "src/main.tsx",
+  "test": "npm test",
+  "build": "npm run build"
+}

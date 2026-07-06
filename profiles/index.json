@@ -1,0 +1,23 @@
+{
+  "contract_version": "0.1.0",
+  "template_id": "react-antd-template",
+  "framework": "React",
+  "ui": "Ant Design",
+  "extension_points": {
+    "app_root": "src/app",
+    "page": "src/features/{feature}/{Feature}Page.tsx",
+    "model": "src/features/{feature}/{feature}-model.ts",
+    "component": "src/shared/ui/{Component}.tsx",
+    "api_client": "src/shared/api/{resource}-client.ts",
+    "config": "src/shared/config/env.ts",
+    "test": "src/features/{feature}/{feature}-model.test.ts"
+  },
+  "profiles": {
+    "admin_console": { "fit": "recommended", "pages": ["dashboard", "list_detail", "create_edit_form", "approval_queue", "audit_log"], "components": ["Layout", "Menu", "Table", "Form", "Drawer", "Modal", "Notification"] },
+    "saas_console": { "fit": "recommended", "pages": ["overview", "workspace", "settings", "billing", "usage"], "components": ["Layout", "Tabs", "Statistic", "Card", "Form", "Alert"] },
+    "commerce_storefront": { "fit": "supported", "pages": ["catalog", "product_detail", "cart", "checkout"], "components": ["Card", "List", "Form", "Steps", "Result"] },
+    "media_dashboard": { "fit": "supported", "pages": ["asset_list", "upload", "transcode_jobs", "moderation_queue"], "components": ["Upload", "Progress", "Table", "Tag", "Drawer"] },
+    "game_portal": { "fit": "not_recommended", "pages": ["profile", "inventory", "leaderboard"], "components": ["Card", "Table", "Badge"] },
+    "content_site": { "fit": "supported", "pages": ["home", "article", "resource_list"], "components": ["Card", "Typography", "Button", "Grid"] }
+  }
+}
