@@ -1,0 +1,23 @@
+{
+  "contract_version": "0.1.0",
+  "template_id": "react-shadcn-template",
+  "framework": "React",
+  "ui": "shadcn/ui-style local components",
+  "extension_points": {
+    "app_root": "src/app",
+    "page": "src/features/{feature}/{Feature}Page.tsx",
+    "model": "src/features/{feature}/{feature}-model.ts",
+    "ui_component": "src/components/ui/{component}.tsx",
+    "api_client": "src/shared/api/{resource}-client.ts",
+    "config": "src/shared/config/env.ts",
+    "test": "src/features/{feature}/{feature}-model.test.ts"
+  },
+  "profiles": {
+    "admin_console": { "fit": "supported", "pages": ["dashboard", "list_detail", "create_edit_form"], "components": ["button", "card", "table", "dialog", "form"] },
+    "saas_console": { "fit": "recommended", "pages": ["overview", "workspace", "billing", "usage"], "components": ["button", "card", "tabs", "command", "form"] },
+    "commerce_storefront": { "fit": "supported", "pages": ["home", "catalog", "product_detail", "cart"], "components": ["button", "card", "badge", "sheet"] },
+    "media_dashboard": { "fit": "supported", "pages": ["asset_list", "upload", "jobs"], "components": ["button", "card", "progress", "toast"] },
+    "game_portal": { "fit": "secondary", "pages": ["profile", "inventory", "leaderboard"], "components": ["button", "card", "badge"] },
+    "content_site": { "fit": "recommended", "pages": ["home", "article", "resource_list"], "components": ["button", "card", "navigation", "form"] }
+  }
+}
