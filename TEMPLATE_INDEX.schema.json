@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jfcwrlight/templates/blob/main/TEMPLATE_INDEX.schema.json",
+  "title": "Branch Template Index",
+  "type": "object",
+  "required": ["schema_version", "repository", "selection_contract", "templates"],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "repository": {
+      "type": "object",
+      "required": ["ssh", "https", "branch_model"],
+      "properties": {
+        "ssh": {
+          "type": "string"
+        },
+        "https": {
+          "type": "string"
+        },
+        "branch_model": {
+          "const": "one-template-per-branch"
+        }
+      }
+    },
+    "selection_contract": {
+      "type": "object",
+      "required": ["entrypoint_files", "clone_template"],
+      "properties": {
+        "entrypoint_files": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "clone_template": {
+          "type": "string"
+        }
+      }
+    },
+    "templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "branch",
+          "commit",
+          "category",
+          "runtime",
+          "framework",
+          "profiles",
+          "fit",
+          "commands",
+          "validation"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "branch": {
+            "type": "string"
+          },
+          "commit": {
+            "type": "string"
+          },
+          "category": {
+            "enum": ["backend", "frontend"]
+          },
+          "runtime": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
+          "ui": {
+            "type": "string"
+          },
+          "profiles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "fit": {
+            "type": "object",
+            "additionalProperties": {
+              "enum": ["recommended", "supported", "secondary", "not_recommended"]
+            }
+          },
+          "commands": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "validation": {
+            "type": "object",
+            "required": ["status", "summary"],
+            "properties": {
+              "status": {
+                "enum": ["ready", "experimental", "blocked"]
+              },
+              "summary": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

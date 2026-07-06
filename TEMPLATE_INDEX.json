@@ -1,0 +1,320 @@
+{
+  "schema_version": "1.0.0",
+  "repository": {
+    "ssh": "git@github.com:jfcwrlight/templates.git",
+    "https": "https://github.com/jfcwrlight/templates.git",
+    "branch_model": "one-template-per-branch"
+  },
+  "selection_contract": {
+    "main_branch_role": "index-only",
+    "entrypoint_files": ["README.md", "AGENTS.md", "USAGE.md", "TEMPLATE_INDEX.json"],
+    "template_branch_required_files": ["README.md", "template.json", "profiles/index.json", "docs/ENGINEERING_SPEC.md"],
+    "clone_template": "git clone --single-branch --branch {branch} git@github.com:jfcwrlight/templates.git {project_dir}",
+    "https_clone_template": "git clone --single-branch --branch {branch} https://github.com/jfcwrlight/templates.git {project_dir}"
+  },
+  "profiles": {
+    "backend": ["traditional_web", "commerce", "video_platform", "game_backend", "saas_multitenant"],
+    "frontend": ["admin_console", "saas_console", "commerce_storefront", "media_dashboard", "game_portal", "content_site"]
+  },
+  "templates": [
+    {
+      "id": "python-fastapi-template",
+      "branch": "python-fastapi-template",
+      "commit": "1721440b33563b45192ffbb15da724d11f5f158f",
+      "category": "backend",
+      "runtime": "python",
+      "framework": "FastAPI",
+      "profiles": ["traditional_web", "commerce", "video_platform", "game_backend", "saas_multitenant"],
+      "fit": {
+        "video_platform": "recommended",
+        "saas_multitenant": "recommended",
+        "traditional_web": "supported",
+        "commerce": "supported",
+        "game_backend": "secondary"
+      },
+      "commands": {
+        "install": "pip install -e \".[dev]\"",
+        "test": "pytest",
+        "start": "uvicorn app.main.run:make_app --factory --host 127.0.0.1 --port 8000",
+        "health": "curl http://127.0.0.1:8000/healthz"
+      },
+      "validation": {
+        "status": "ready",
+        "summary": "pytest, startup, health, readiness, identity endpoint, and pip check passed."
+      }
+    },
+    {
+      "id": "python-django-template",
+      "branch": "python-django-template",
+      "commit": "a312e24a091c9fd50d753b1ab24281447718edd1",
+      "category": "backend",
+      "runtime": "python",
+      "framework": "Django",
+      "profiles": ["traditional_web", "commerce", "video_platform", "game_backend", "saas_multitenant"],
+      "fit": {
+        "traditional_web": "recommended",
+        "commerce": "supported",
+        "saas_multitenant": "supported",
+        "video_platform": "secondary",
+        "game_backend": "secondary"
+      },
+      "commands": {
+        "install": "pip install -r requirements/local.txt",
+        "test": "python manage.py check --settings=config.settings.test",
+        "start": "python manage.py runserver 127.0.0.1:8000 --settings=config.settings.local",
+        "health": "curl http://127.0.0.1:8000/healthz"
+      },
+      "validation": {
+        "status": "ready",
+        "summary": "compile, Django system check, startup, health endpoint, and pip check passed."
+      }
+    },
+    {
+      "id": "go-gozero-template",
+      "branch": "go-gozero-template",
+      "commit": "7febaa6848c7b181d454fbda0fae36826c0ba281",
+      "category": "backend",
+      "runtime": "go",
+      "framework": "go-zero",
+      "profiles": ["traditional_web", "commerce", "video_platform", "game_backend", "saas_multitenant"],
+      "fit": {
+        "commerce": "recommended",
+        "game_backend": "recommended",
+        "video_platform": "supported",
+        "saas_multitenant": "supported",
+        "traditional_web": "secondary"
+      },
+      "commands": {
+        "install": "go mod download",
+        "test": "go test ./...",
+        "start": "go run . -f etc/backend.yaml",
+        "health": "curl http://127.0.0.1:8888/healthz"
+      },
+      "validation": {
+        "status": "ready",
+        "summary": "go test, startup, health endpoint, identity endpoint, and go mod verify passed."
+      }
+    },
+    {
+      "id": "go-kratos-template",
+      "branch": "go-kratos-template",
+      "commit": "c9d2d4fbeae1c6c4c980993f216afd36853c810a",
+      "category": "backend",
+      "runtime": "go",
+      "framework": "Kratos",
+      "profiles": ["traditional_web", "commerce", "video_platform", "game_backend", "saas_multitenant"],
+      "fit": {
+        "video_platform": "recommended",
+        "game_backend": "recommended",
+        "commerce": "supported",
+        "saas_multitenant": "supported",
+        "traditional_web": "secondary"
+      },
+      "commands": {
+        "install": "go mod download",
+        "test": "go test ./...",
+        "start": "HTTP_ADDR=127.0.0.1:8000 go run ./cmd/server",
+        "health": "curl http://127.0.0.1:8000/healthz"
+      },
+      "validation": {
+        "status": "ready",
+        "summary": "go test, environment-driven startup, health endpoint, identity endpoint, and go mod verify passed."
+      }
+    },
+    {
+      "id": "node-nestjs-template",
+      "branch": "node-nestjs-template",
+      "commit": "42ef09f6a302fa94efd2913d944da98221f0adfe",
+      "category": "backend",
+      "runtime": "nodejs",
+      "framework": "NestJS",
+      "profiles": ["traditional_web", "commerce", "video_platform", "game_backend", "saas_multitenant"],
+      "fit": {
+        "saas_multitenant": "recommended",
+        "traditional_web": "supported",
+        "commerce": "supported",
+        "video_platform": "supported",
+        "game_backend": "supported"
+      },
+      "commands": {
+        "install": "npm ci",
+        "test": "npm test",
+        "build": "npm run build",
+        "start": "PORT=3000 npm start",
+        "health": "curl http://127.0.0.1:3000/healthz"
+      },
+      "validation": {
+        "status": "ready",
+        "summary": "npm ci, typecheck, build, startup, health endpoint, identity endpoint, and production audit passed."
+      }
+    },
+    {
+      "id": "react-antd-template",
+      "branch": "react-antd-template",
+      "commit": "902db1acd47181027d2cb52a6a13d3bcbf379c39",
+      "category": "frontend",
+      "runtime": "typescript",
+      "framework": "React",
+      "ui": "Ant Design",
+      "profiles": ["admin_console", "saas_console", "commerce_storefront", "media_dashboard", "game_portal", "content_site"],
+      "fit": {
+        "admin_console": "recommended",
+        "saas_console": "recommended",
+        "commerce_storefront": "supported",
+        "media_dashboard": "supported",
+        "content_site": "supported",
+        "game_portal": "not_recommended"
+      },
+      "commands": {
+        "install": "npm ci",
+        "test": "npm test",
+        "build": "npm run build",
+        "start": "npm run dev"
+      },
+      "validation": {
+        "status": "ready",
+        "summary": "npm ci, tests, typecheck, build, desktop/mobile browser smoke, and production audit passed."
+      }
+    },
+    {
+      "id": "react-mui-template",
+      "branch": "react-mui-template",
+      "commit": "8e80cb3260ce1137662c38a511b545d5058c58e1",
+      "category": "frontend",
+      "runtime": "typescript",
+      "framework": "React",
+      "ui": "Material UI",
+      "profiles": ["admin_console", "saas_console", "commerce_storefront", "media_dashboard", "game_portal", "content_site"],
+      "fit": {
+        "saas_console": "recommended",
+        "content_site": "recommended",
+        "admin_console": "supported",
+        "commerce_storefront": "supported",
+        "media_dashboard": "supported",
+        "game_portal": "supported"
+      },
+      "commands": {
+        "install": "npm ci",
+        "test": "npm test",
+        "build": "npm run build",
+        "start": "npm run dev"
+      },
+      "validation": {
+        "status": "ready",
+        "summary": "npm ci, tests, typecheck, build, desktop/mobile browser smoke, and production audit passed."
+      }
+    },
+    {
+      "id": "react-shadcn-template",
+      "branch": "react-shadcn-template",
+      "commit": "72664c5dc5cced39bc185f2f7e08dc6652a80ee3",
+      "category": "frontend",
+      "runtime": "typescript",
+      "framework": "React",
+      "ui": "shadcn/ui-style local components",
+      "profiles": ["admin_console", "saas_console", "commerce_storefront", "media_dashboard", "game_portal", "content_site"],
+      "fit": {
+        "saas_console": "recommended",
+        "content_site": "recommended",
+        "admin_console": "supported",
+        "commerce_storefront": "supported",
+        "media_dashboard": "supported",
+        "game_portal": "secondary"
+      },
+      "commands": {
+        "install": "npm ci",
+        "test": "npm test",
+        "build": "npm run build",
+        "start": "npm run dev"
+      },
+      "validation": {
+        "status": "ready",
+        "summary": "npm ci, tests, typecheck, build, desktop/mobile browser smoke, and production audit passed."
+      }
+    },
+    {
+      "id": "vue-element-plus-template",
+      "branch": "vue-element-plus-template",
+      "commit": "e0728cf0323a91559820d6f557441b99148d05f0",
+      "category": "frontend",
+      "runtime": "typescript",
+      "framework": "Vue",
+      "ui": "Element Plus",
+      "profiles": ["admin_console", "saas_console", "commerce_storefront", "media_dashboard", "game_portal", "content_site"],
+      "fit": {
+        "admin_console": "recommended",
+        "commerce_storefront": "recommended",
+        "saas_console": "supported",
+        "media_dashboard": "supported",
+        "game_portal": "secondary",
+        "content_site": "secondary"
+      },
+      "commands": {
+        "install": "npm ci",
+        "test": "npm test",
+        "build": "npm run build",
+        "start": "npm run dev"
+      },
+      "validation": {
+        "status": "ready",
+        "summary": "npm ci, tests, typecheck, build, desktop/mobile browser smoke, and production audit passed."
+      }
+    },
+    {
+      "id": "vue-naive-ui-template",
+      "branch": "vue-naive-ui-template",
+      "commit": "55bfa13d5217f0be92cf5399e89ecf94201b3e5e",
+      "category": "frontend",
+      "runtime": "typescript",
+      "framework": "Vue",
+      "ui": "Naive UI",
+      "profiles": ["admin_console", "saas_console", "commerce_storefront", "media_dashboard", "game_portal", "content_site"],
+      "fit": {
+        "saas_console": "recommended",
+        "media_dashboard": "recommended",
+        "admin_console": "supported",
+        "commerce_storefront": "supported",
+        "game_portal": "supported",
+        "content_site": "supported"
+      },
+      "commands": {
+        "install": "npm ci",
+        "test": "npm test",
+        "build": "npm run build",
+        "start": "npm run dev"
+      },
+      "validation": {
+        "status": "ready",
+        "summary": "npm ci, tests, typecheck, build, desktop/mobile browser smoke, and production audit passed."
+      }
+    },
+    {
+      "id": "vanilla-shoelace-template",
+      "branch": "vanilla-shoelace-template",
+      "commit": "5596bc41b358620e694ca7c1610de6d4fb9a8ca7",
+      "category": "frontend",
+      "runtime": "typescript",
+      "framework": "Vanilla TypeScript",
+      "ui": "Shoelace Web Components",
+      "profiles": ["admin_console", "saas_console", "commerce_storefront", "media_dashboard", "game_portal", "content_site"],
+      "fit": {
+        "content_site": "recommended",
+        "game_portal": "recommended",
+        "admin_console": "supported",
+        "commerce_storefront": "supported",
+        "media_dashboard": "supported",
+        "saas_console": "secondary"
+      },
+      "commands": {
+        "install": "npm ci",
+        "test": "npm test",
+        "build": "npm run build",
+        "start": "npm run dev"
+      },
+      "validation": {
+        "status": "ready",
+        "summary": "npm ci, tests, typecheck, build, desktop/mobile browser smoke, and production audit passed."
+      }
+    }
+  ]
+}
