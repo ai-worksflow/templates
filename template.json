@@ -2,8 +2,12 @@
   "id": "go-gozero-template",
   "runtime": "go",
   "framework": "go-zero",
-  "engineering_level": "advanced_template",
+  "engineering_level": "template",
   "upstreams": ["go-zero", "go-clean-template"],
+  "profile_manifest": "profiles/index.json",
+  "engineering_spec": "docs/ENGINEERING_SPEC.md",
+  "profiles": ["traditional_web", "commerce", "video_platform", "game_backend", "saas_multitenant"],
+  "recommended_profiles": ["commerce", "game_backend"],
   "entrypoint": ".",
   "test": "go test ./...",
   "architecture": ["service_context", "rest_rpc_ready", "clean_architecture"]

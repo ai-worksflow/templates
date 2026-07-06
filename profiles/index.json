@@ -1,0 +1,81 @@
+{
+  "contract_version": "0.2.0",
+  "template_id": "go-gozero-template",
+  "runtime": "go",
+  "framework": "go-zero",
+  "profile_contract_version": "0.2.0",
+  "extension_points": {
+    "domain": "internal/domain/{module}",
+    "logic": "internal/logic/{module}",
+    "handler": "internal/handler/{module}",
+    "repository": "internal/repo/{module}_repo.go",
+    "types": "internal/types/{module}.go",
+    "service_context": "internal/svc/servicecontext.go",
+    "routes": "internal/handler/routes.go",
+    "config": "etc/backend.yaml",
+    "tests": "internal/logic/{module}/"
+  },
+  "module_layers": ["domain", "logic", "handler", "repository", "types"],
+  "profiles": {
+    "traditional_web": {
+      "fit": "secondary",
+      "runtime_role": "api_backend_for_high_throughput_business_flows",
+      "modules": ["content", "workflow", "notification", "audit"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub"],
+      "implementation_order": ["content", "workflow", "audit", "notification"],
+      "events": ["content.published", "workflow.approved", "workflow.rejected", "notification.requested"],
+      "jobs": ["send_notification", "expire_pending_workflow", "audit_export"],
+      "data_boundaries": ["postgres", "redis_cache", "object_storage"],
+      "notes": ["Use when throughput matters more than Django-style admin and forms."]
+    },
+    "commerce": {
+      "fit": "recommended",
+      "runtime_role": "core_commerce_service",
+      "modules": ["catalog", "pricing", "cart", "order", "payment", "inventory", "fulfillment"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub", "rate_limit"],
+      "implementation_order": ["catalog", "pricing", "inventory", "cart", "order", "payment", "fulfillment"],
+      "events": ["cart.checked_out", "order.created", "payment.authorized", "payment.failed", "inventory.reserved", "fulfillment.shipped"],
+      "jobs": ["payment_callback_reconcile", "inventory_reservation_expire", "order_timeout_cancel", "fulfillment_sync"],
+      "data_boundaries": ["postgres", "redis_cache", "message_queue", "payment_provider", "search_index"],
+      "notes": ["Put idempotency keys and provider callback verification in logic before repository writes."]
+    },
+    "video_platform": {
+      "fit": "supported",
+      "runtime_role": "video_api_or_callback_service",
+      "modules": ["asset", "upload", "transcode", "playback", "entitlement", "moderation"],
+      "protocols": ["http", "realtime", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub", "rate_limit"],
+      "implementation_order": ["asset", "upload", "transcode", "playback", "entitlement", "moderation"],
+      "events": ["asset.created", "upload.completed", "transcode.requested", "transcode.completed", "playback.started", "moderation.flagged"],
+      "jobs": ["transcode_worker", "thumbnail_extract", "manifest_package", "cdn_purge", "moderation_scan"],
+      "data_boundaries": ["postgres", "object_storage", "message_queue", "cdn", "transcode_provider"],
+      "notes": ["Use go-zero for high-throughput upload callbacks, playback token APIs, and provider callback endpoints."]
+    },
+    "game_backend": {
+      "fit": "recommended",
+      "runtime_role": "low_latency_game_service",
+      "modules": ["player", "session", "matchmaking", "inventory", "economy", "leaderboard", "telemetry"],
+      "protocols": ["http", "realtime", "events"],
+      "middleware": ["request_id", "logging", "timing", "auth_stub", "rate_limit"],
+      "implementation_order": ["player", "session", "matchmaking", "inventory", "economy", "leaderboard", "telemetry"],
+      "events": ["session.created", "matchmaking.ticket_created", "matchmaking.matched", "inventory.granted", "economy.transaction_posted", "leaderboard.score_submitted"],
+      "jobs": ["matchmaking_tick", "session_timeout_sweep", "leaderboard_rollover", "telemetry_flush"],
+      "data_boundaries": ["redis_cache", "postgres", "message_queue", "analytics_sink"],
+      "notes": ["Keep session and matchmaking logic isolated from transport handlers; use Redis-backed adapters for hot paths after fork."]
+    },
+    "saas_multitenant": {
+      "fit": "supported",
+      "runtime_role": "tenant_aware_api_or_platform_service",
+      "modules": ["tenant", "workspace", "permission", "subscription", "billing", "usage", "integration", "audit"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub", "rate_limit"],
+      "implementation_order": ["tenant", "workspace", "permission", "subscription", "billing", "usage", "integration", "audit"],
+      "events": ["tenant.created", "workspace.member_invited", "permission.role_changed", "subscription.changed", "usage.recorded", "billing.webhook_received"],
+      "jobs": ["usage_rollup", "invoice_sync", "webhook_delivery", "audit_export", "quota_refresh"],
+      "data_boundaries": ["postgres", "redis_cache", "message_queue", "billing_provider", "email_provider"],
+      "notes": ["Add tenant scope to request types and service context dependencies before implementing repositories."]
+    }
+  }
+}
