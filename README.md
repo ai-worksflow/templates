@@ -28,6 +28,14 @@ requirements/         layered dependency files.
 deploy/               deployment assets.
 ```
 
+## Profiles And Engineering Rules
+
+- Product profiles live in `profiles/index.json`.
+- Framework-specific engineering rules live in `docs/ENGINEERING_SPEC.md`.
+- Recommended profile: `traditional_web`.
+- Supported profiles: `commerce`, `saas_multitenant`.
+- Secondary profiles: `video_platform`, `game_backend`.
+
 ## Why Django Profile Exists
 
 Do not force FastAPI patterns onto Django-heavy applications. Use this profile when you want Django ORM, admin, auth, forms, template rendering, Celery, and operational settings as first-class project primitives.

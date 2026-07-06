@@ -1,0 +1,84 @@
+{
+  "contract_version": "0.2.0",
+  "template_id": "python-django-template",
+  "runtime": "python",
+  "framework": "Django",
+  "profile_contract_version": "0.2.0",
+  "extension_points": {
+    "app_root": "apps/{module}",
+    "models": "apps/{module}/models.py",
+    "services": "apps/{module}/services.py",
+    "selectors": "apps/{module}/selectors.py",
+    "admin": "apps/{module}/admin.py",
+    "urls": "apps/{module}/urls.py",
+    "views": "apps/{module}/views.py",
+    "tasks": "apps/{module}/tasks.py",
+    "templates": "templates/{module}",
+    "settings_registration": "config/settings/base.py",
+    "root_urls": "config/urls.py",
+    "tests": "tests/{module}/"
+  },
+  "module_layers": ["models", "services", "selectors", "admin", "views", "tasks"],
+  "profiles": {
+    "traditional_web": {
+      "fit": "recommended",
+      "runtime_role": "admin_heavy_business_web_backend",
+      "modules": ["content", "workflow", "notification", "audit"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub"],
+      "implementation_order": ["content", "workflow", "audit", "notification"],
+      "events": ["content.published", "workflow.approved", "workflow.rejected", "notification.requested"],
+      "jobs": ["send_notification", "expire_pending_workflow", "audit_export"],
+      "data_boundaries": ["postgres", "redis_cache", "object_storage"],
+      "notes": ["Register each app in INSTALLED_APPS and add Django admin classes before exposing API views."]
+    },
+    "commerce": {
+      "fit": "supported",
+      "runtime_role": "commerce_backoffice_or_order_admin",
+      "modules": ["catalog", "pricing", "cart", "order", "payment", "inventory", "fulfillment"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub", "rate_limit"],
+      "implementation_order": ["catalog", "pricing", "inventory", "order", "payment", "fulfillment", "cart"],
+      "events": ["cart.checked_out", "order.created", "payment.authorized", "payment.failed", "inventory.reserved", "fulfillment.shipped"],
+      "jobs": ["payment_callback_reconcile", "inventory_reservation_expire", "order_timeout_cancel", "fulfillment_sync"],
+      "data_boundaries": ["postgres", "redis_cache", "message_queue", "payment_provider", "search_index"],
+      "notes": ["Use Django admin for catalog, inventory, and order operations; isolate provider callbacks in services.py."]
+    },
+    "video_platform": {
+      "fit": "secondary",
+      "runtime_role": "media_admin_and_moderation_backend",
+      "modules": ["asset", "upload", "transcode", "playback", "entitlement", "moderation"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub", "rate_limit"],
+      "implementation_order": ["asset", "moderation", "entitlement", "upload", "transcode", "playback"],
+      "events": ["asset.created", "upload.completed", "transcode.requested", "transcode.completed", "playback.started", "moderation.flagged"],
+      "jobs": ["transcode_worker", "thumbnail_extract", "manifest_package", "cdn_purge", "moderation_scan"],
+      "data_boundaries": ["postgres", "object_storage", "message_queue", "cdn", "transcode_provider"],
+      "notes": ["Use this template for media operations/admin; use python-fastapi-template or Go templates for ingest and processing APIs."]
+    },
+    "game_backend": {
+      "fit": "secondary",
+      "runtime_role": "game_operations_admin_backend",
+      "modules": ["player", "session", "matchmaking", "inventory", "economy", "leaderboard", "telemetry"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "auth_stub", "rate_limit"],
+      "implementation_order": ["player", "inventory", "economy", "leaderboard", "session", "matchmaking", "telemetry"],
+      "events": ["session.created", "matchmaking.ticket_created", "matchmaking.matched", "inventory.granted", "economy.transaction_posted", "leaderboard.score_submitted"],
+      "jobs": ["matchmaking_tick", "session_timeout_sweep", "leaderboard_rollover", "telemetry_flush"],
+      "data_boundaries": ["redis_cache", "postgres", "message_queue", "analytics_sink"],
+      "notes": ["Use Django for game operations, moderation, player support, and economy admin; do not place low-latency session loops here."]
+    },
+    "saas_multitenant": {
+      "fit": "supported",
+      "runtime_role": "admin_first_saas_backend",
+      "modules": ["tenant", "workspace", "permission", "subscription", "billing", "usage", "integration", "audit"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub", "rate_limit"],
+      "implementation_order": ["tenant", "workspace", "permission", "subscription", "billing", "usage", "integration", "audit"],
+      "events": ["tenant.created", "workspace.member_invited", "permission.role_changed", "subscription.changed", "usage.recorded", "billing.webhook_received"],
+      "jobs": ["usage_rollup", "invoice_sync", "webhook_delivery", "audit_export", "quota_refresh"],
+      "data_boundaries": ["postgres", "redis_cache", "message_queue", "billing_provider", "email_provider"],
+      "notes": ["Use tenant-aware managers/querysets and enforce tenant scoping in selectors.py before views.py."]
+    }
+  }
+}

@@ -2,8 +2,12 @@
   "id": "python-django-template",
   "runtime": "python",
   "framework": "Django",
-  "engineering_level": "advanced_template",
+  "engineering_level": "template",
   "upstreams": ["cookiecutter-django"],
+  "profile_manifest": "profiles/index.json",
+  "engineering_spec": "docs/ENGINEERING_SPEC.md",
+  "profiles": ["traditional_web", "commerce", "video_platform", "game_backend", "saas_multitenant"],
+  "recommended_profiles": ["traditional_web"],
   "entrypoint": "manage.py",
   "architecture": ["django_project", "settings_split", "custom_user", "celery_ready"]
 }
