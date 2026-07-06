@@ -1,0 +1,10 @@
+{
+  "id": "python-fastapi-template",
+  "runtime": "python",
+  "framework": "FastAPI",
+  "engineering_level": "advanced_template",
+  "upstreams": ["fastapi-full-stack", "fastapi-clean-example", "fastapi-best-architecture"],
+  "entrypoint": "app.main.run:make_app",
+  "test": "pytest",
+  "architecture": ["clean_architecture", "cqrs", "unit_of_work", "ports_and_adapters"]
+}
