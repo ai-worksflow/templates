@@ -1,0 +1,10 @@
+{
+  "id": "node-nestjs-template",
+  "runtime": "nodejs",
+  "framework": "NestJS",
+  "engineering_level": "advanced_template",
+  "upstreams": ["nestjs", "ack-nestjs-boilerplate", "clean-nest-prisma-pg", "nestjs-clean-architecture-boilerplate"],
+  "entrypoint": "src/main.ts",
+  "test": "npm test",
+  "architecture": ["nestjs_modules", "clean_architecture", "prisma_ready", "rbac_ready"]
+}
