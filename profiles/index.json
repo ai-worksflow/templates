@@ -1,0 +1,22 @@
+{
+  "contract_version": "0.1.0",
+  "template_id": "vue-element-plus-template",
+  "framework": "Vue",
+  "ui": "Element Plus",
+  "extension_points": {
+    "app_root": "src/app",
+    "page": "src/features/{feature}/{Feature}Page.vue",
+    "model": "src/features/{feature}/{feature}-model.ts",
+    "api_client": "src/shared/api/{resource}-client.ts",
+    "config": "src/shared/config/env.ts",
+    "test": "src/features/{feature}/{feature}-model.test.ts"
+  },
+  "profiles": {
+    "admin_console": { "fit": "recommended", "pages": ["dashboard", "list_detail", "form", "approval_queue"], "components": ["ElContainer", "ElMenu", "ElTable", "ElForm", "ElDialog", "ElDrawer"] },
+    "saas_console": { "fit": "supported", "pages": ["overview", "workspace", "settings", "billing"], "components": ["ElCard", "ElTabs", "ElStatistic", "ElForm"] },
+    "commerce_storefront": { "fit": "recommended", "pages": ["catalog", "product_detail", "cart", "checkout"], "components": ["ElCard", "ElSteps", "ElForm", "ElResult"] },
+    "media_dashboard": { "fit": "supported", "pages": ["asset_list", "upload", "jobs"], "components": ["ElUpload", "ElProgress", "ElTable", "ElTag"] },
+    "game_portal": { "fit": "secondary", "pages": ["profile", "inventory", "leaderboard"], "components": ["ElCard", "ElTable", "ElTag"] },
+    "content_site": { "fit": "secondary", "pages": ["home", "article", "resource_list"], "components": ["ElCard", "ElButton", "ElForm"] }
+  }
+}

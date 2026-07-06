@@ -1,0 +1,14 @@
+{
+  "id": "vue-element-plus-template",
+  "framework": "Vue",
+  "ui": "Element Plus",
+  "language": "TypeScript",
+  "build_tool": "Vite",
+  "profile_manifest": "profiles/index.json",
+  "engineering_spec": "docs/ENGINEERING_SPEC.md",
+  "recommended_profiles": ["admin_console", "commerce_storefront"],
+  "supported_profiles": ["saas_console", "media_dashboard"],
+  "entrypoint": "src/main.ts",
+  "test": "npm test",
+  "build": "npm run build"
+}
