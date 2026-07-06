@@ -1,0 +1,10 @@
+{
+  "id": "go-gozero-template",
+  "runtime": "go",
+  "framework": "go-zero",
+  "engineering_level": "advanced_template",
+  "upstreams": ["go-zero", "go-clean-template"],
+  "entrypoint": ".",
+  "test": "go test ./...",
+  "architecture": ["service_context", "rest_rpc_ready", "clean_architecture"]
+}

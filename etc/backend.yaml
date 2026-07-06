@@ -1,0 +1,16 @@
+Name: go-gozero-template
+Host: 0.0.0.0
+Port: 8888
+Timeout: 3000
+Middlewares:
+  Trace: true
+  Log: true
+  Prometheus: true
+  MaxConns: true
+  Breaker: true
+  Shedding: true
+  Timeout: true
+  Recover: true
+  Metrics: true
+  MaxBytes: true
+  Gunzip: true
