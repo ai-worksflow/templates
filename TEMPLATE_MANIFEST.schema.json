@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jfcwrlight/templates/blob/main/TEMPLATE_MANIFEST.schema.json",
+  "title": "Template Branch Manifest",
+  "type": "object",
+  "required": [
+    "id",
+    "category",
+    "runtime",
+    "framework",
+    "language",
+    "profile_manifest",
+    "engineering_spec",
+    "profiles",
+    "recommended_profiles",
+    "commands",
+    "entrypoints",
+    "validation"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "category": {
+      "enum": ["backend", "frontend"]
+    },
+    "runtime": {
+      "type": "string"
+    },
+    "framework": {
+      "type": "string"
+    },
+    "ui": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string"
+    },
+    "build_tool": {
+      "type": "string"
+    },
+    "profile_manifest": {
+      "type": "string"
+    },
+    "engineering_spec": {
+      "type": "string"
+    },
+    "profiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recommended_profiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "supported_profiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "commands": {
+      "type": "object",
+      "required": ["install", "test"],
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "entrypoints": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "healthchecks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "method", "path", "expected_status"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "method": {
+            "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"]
+          },
+          "path": {
+            "type": "string"
+          },
+          "expected_status": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "extension_points": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": ["status", "commands"],
+      "properties": {
+        "status": {
+          "enum": ["ready", "experimental", "blocked"]
+        },
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

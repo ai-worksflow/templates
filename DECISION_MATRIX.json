@@ -1,0 +1,130 @@
+{
+  "schema_version": "1.0.0",
+  "selection_order": [
+    "explicit_branch",
+    "product_type",
+    "domain_profile",
+    "runtime_or_framework",
+    "team_skill",
+    "performance_or_ui_constraints"
+  ],
+  "product_decisions": [
+    {
+      "id": "traditional_business_system",
+      "keywords": ["admin", "crm", "erp", "cms", "workflow", "approval", "back office", "internal system"],
+      "backend_profile": "traditional_web",
+      "frontend_profile": "admin_console",
+      "recommended_backend": "python-django-template",
+      "recommended_frontend": "react-antd-template",
+      "alternatives": {
+        "backend": ["node-nestjs-template", "python-fastapi-template"],
+        "frontend": ["vue-element-plus-template", "react-mui-template"]
+      },
+      "reason": "Django fits admin-heavy business systems; Ant Design fits dense enterprise tables/forms."
+    },
+    {
+      "id": "commerce_platform",
+      "keywords": ["commerce", "ecommerce", "order", "payment", "cart", "inventory", "marketplace", "checkout"],
+      "backend_profile": "commerce",
+      "frontend_profile": "commerce_storefront",
+      "recommended_backend": "go-gozero-template",
+      "recommended_frontend": "vue-element-plus-template",
+      "alternatives": {
+        "backend": ["node-nestjs-template", "go-kratos-template", "python-django-template"],
+        "frontend": ["react-antd-template", "react-mui-template", "react-shadcn-template"]
+      },
+      "reason": "go-zero fits high-throughput commerce APIs; Element Plus fits commerce admin and operational flows."
+    },
+    {
+      "id": "video_or_media_platform",
+      "keywords": ["video", "media", "upload", "transcode", "playback", "live", "asset", "moderation", "cdn"],
+      "backend_profile": "video_platform",
+      "frontend_profile": "media_dashboard",
+      "recommended_backend": "python-fastapi-template",
+      "recommended_frontend": "vue-naive-ui-template",
+      "alternatives": {
+        "backend": ["go-kratos-template", "go-gozero-template"],
+        "frontend": ["react-mui-template", "react-antd-template"]
+      },
+      "reason": "FastAPI fits workflow orchestration and provider adapters; Naive UI fits media/job dashboards."
+    },
+    {
+      "id": "game_backend_and_portal",
+      "keywords": ["game", "player", "matchmaking", "session", "inventory", "leaderboard", "economy", "telemetry"],
+      "backend_profile": "game_backend",
+      "frontend_profile": "game_portal",
+      "recommended_backend": "go-gozero-template",
+      "recommended_frontend": "vanilla-shoelace-template",
+      "alternatives": {
+        "backend": ["go-kratos-template", "node-nestjs-template"],
+        "frontend": ["vue-naive-ui-template", "react-mui-template"]
+      },
+      "reason": "Go templates fit low-latency services; Shoelace fits lightweight player portals and embedded views."
+    },
+    {
+      "id": "saas_multitenant_console",
+      "keywords": ["saas", "tenant", "workspace", "billing", "subscription", "usage", "rbac", "integrations"],
+      "backend_profile": "saas_multitenant",
+      "frontend_profile": "saas_console",
+      "recommended_backend": "node-nestjs-template",
+      "recommended_frontend": "react-mui-template",
+      "alternatives": {
+        "backend": ["python-fastapi-template", "go-kratos-template"],
+        "frontend": ["react-shadcn-template", "vue-naive-ui-template", "react-antd-template"]
+      },
+      "reason": "NestJS fits modular TypeScript SaaS backends; MUI fits polished product consoles."
+    },
+    {
+      "id": "ai_or_data_api",
+      "keywords": ["ai", "ml", "agent", "data api", "pipeline", "orchestration", "model", "inference"],
+      "backend_profile": "saas_multitenant",
+      "frontend_profile": "saas_console",
+      "recommended_backend": "python-fastapi-template",
+      "recommended_frontend": "react-shadcn-template",
+      "alternatives": {
+        "backend": ["node-nestjs-template", "go-kratos-template"],
+        "frontend": ["react-mui-template", "vue-naive-ui-template"]
+      },
+      "reason": "FastAPI fits Python AI/data workflows; local shadcn-style components fit fast product iteration."
+    },
+    {
+      "id": "content_or_marketing_site",
+      "keywords": ["content", "marketing", "docs", "portfolio", "resource", "landing", "site"],
+      "backend_profile": "traditional_web",
+      "frontend_profile": "content_site",
+      "recommended_backend": "python-django-template",
+      "recommended_frontend": "vanilla-shoelace-template",
+      "alternatives": {
+        "backend": ["python-fastapi-template"],
+        "frontend": ["react-mui-template", "react-shadcn-template", "vue-naive-ui-template"]
+      },
+      "reason": "Django handles content/admin workflows; Shoelace keeps content frontends framework-light."
+    }
+  ],
+  "team_skill_overrides": [
+    {
+      "condition": "team_prefers_typescript_end_to_end",
+      "backend": "node-nestjs-template",
+      "frontend": "react-mui-template"
+    },
+    {
+      "condition": "team_prefers_go_microservices",
+      "backend": "go-kratos-template",
+      "frontend": "react-mui-template"
+    },
+    {
+      "condition": "team_prefers_vue",
+      "backend": "go-gozero-template",
+      "frontend": "vue-element-plus-template"
+    },
+    {
+      "condition": "team_prefers_python",
+      "backend": "python-fastapi-template",
+      "frontend": "react-shadcn-template"
+    }
+  ],
+  "selection_output_contract": {
+    "required_fields": ["backend_branch", "frontend_branch", "backend_profile", "frontend_profile", "clone_commands", "validation_commands"],
+    "clone_command_format": "git clone --single-branch --branch {branch} git@github.com:jfcwrlight/templates.git {project_dir}"
+  }
+}

@@ -6,14 +6,15 @@ This repository uses one Git branch per project template.
 
 1. Treat `main` as an index branch only.
 2. Read `TEMPLATE_INDEX.json` before choosing a template.
-3. Select exactly one template branch unless the user asks for multiple templates.
-4. Clone or checkout the selected branch with `--single-branch`.
-5. After entering a template branch, read:
+3. If the user describes a product, read `DECISION_MATRIX.json` before selecting branches.
+4. Select exactly one template branch unless the user asks for multiple templates or a full-stack pair.
+5. Clone or checkout the selected branch with `--single-branch`.
+6. After entering a template branch, read:
    - `README.md`
    - `template.json`
    - `profiles/index.json`
    - `docs/ENGINEERING_SPEC.md`
-6. Follow the selected template's validation commands before making broad feature changes.
+7. Follow the selected template's validation commands before making broad feature changes.
 
 ## Do Not
 
@@ -39,5 +40,7 @@ This repository uses one Git branch per project template.
 ## Output Expectations
 
 When answering a user about available templates, name the branch and the clone command.
+
+When selecting a full-stack pair, return `backend_branch`, `frontend_branch`, selected profiles, and clone commands.
 
 When starting implementation from a template, keep the template's entrypoint, profile manifest, and engineering spec intact unless the user explicitly asks to change the framework contract.

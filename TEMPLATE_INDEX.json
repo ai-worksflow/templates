@@ -7,8 +7,10 @@
   },
   "selection_contract": {
     "main_branch_role": "index-only",
-    "entrypoint_files": ["README.md", "AGENTS.md", "USAGE.md", "TEMPLATE_INDEX.json"],
+    "entrypoint_files": ["README.md", "AGENTS.md", "USAGE.md", "TEMPLATE_INDEX.json", "DECISION_MATRIX.json"],
     "template_branch_required_files": ["README.md", "template.json", "profiles/index.json", "docs/ENGINEERING_SPEC.md"],
+    "template_manifest_schema": "TEMPLATE_MANIFEST.schema.json",
+    "decision_matrix": "DECISION_MATRIX.json",
     "clone_template": "git clone --single-branch --branch {branch} git@github.com:jfcwrlight/templates.git {project_dir}",
     "https_clone_template": "git clone --single-branch --branch {branch} https://github.com/jfcwrlight/templates.git {project_dir}"
   },

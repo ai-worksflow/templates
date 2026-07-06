@@ -8,8 +8,11 @@ The `main` branch is an index and usage guide only. It does not contain template
 
 - `TEMPLATE_INDEX.json`: canonical machine-readable template catalog.
 - `TEMPLATE_INDEX.schema.json`: schema for validating the catalog.
+- `TEMPLATE_MANIFEST.schema.json`: target schema for each template branch's `template.json`.
+- `DECISION_MATRIX.json`: machine-readable product-to-template selection matrix.
 - `AGENTS.md`: instructions for AI coding agents.
 - `USAGE.md`: human and workflow usage guide.
+- `MAINTENANCE.md`: update, security, validation, and deprecation policy.
 - `VALIDATION_SUMMARY.md`: validation status for each template.
 
 ## Quick Start
@@ -54,11 +57,13 @@ cd my-frontend
 ## Workflow
 
 1. Read `TEMPLATE_INDEX.json`.
-2. Select by `category`, `profile`, `framework`, `ui`, or `runtime`.
-3. Clone the selected branch with `--single-branch`.
-4. Read the cloned template's `README.md`.
-5. Read the cloned template's `profiles/index.json`.
-6. Read the cloned template's `docs/ENGINEERING_SPEC.md`.
-7. Run the template's validation command from `TEMPLATE_INDEX.json`.
+2. If the task describes a product rather than a branch, read `DECISION_MATRIX.json`.
+3. Select by `category`, `profile`, `framework`, `ui`, or `runtime`.
+4. Clone the selected branch with `--single-branch`.
+5. Read the cloned template's `README.md`.
+6. Read the cloned template's `template.json`.
+7. Read the cloned template's `profiles/index.json`.
+8. Read the cloned template's `docs/ENGINEERING_SPEC.md`.
+9. Run the template's validation command from `TEMPLATE_INDEX.json`.
 
 Do not add generated product code to `main`. Product work starts from a template branch fork.

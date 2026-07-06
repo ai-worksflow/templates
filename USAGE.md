@@ -15,13 +15,14 @@ Use this deterministic selection flow:
 
 1. Load `TEMPLATE_INDEX.json`.
 2. If the user specifies a branch, use that branch.
-3. If the user specifies backend/frontend, filter by `category`.
-4. If the user specifies language/runtime, filter by `runtime`.
-5. If the user specifies framework or UI library, filter by `framework` or `ui`.
-6. If the user specifies domain/product type, filter by `profiles`.
-7. Prefer templates where `fit` is `recommended`.
-8. Clone the selected branch with `--single-branch`.
-9. Inside the cloned template, read `template.json`, `profiles/index.json`, and `docs/ENGINEERING_SPEC.md`.
+3. If the user describes a product type, load `DECISION_MATRIX.json`.
+4. If the user specifies backend/frontend, filter by `category`.
+5. If the user specifies language/runtime, filter by `runtime`.
+6. If the user specifies framework or UI library, filter by `framework` or `ui`.
+7. If the user specifies domain/product type, filter by `profiles`.
+8. Prefer templates where `fit` is `recommended`.
+9. Clone the selected branch with `--single-branch`.
+10. Inside the cloned template, read `template.json`, `profiles/index.json`, and `docs/ENGINEERING_SPEC.md`.
 
 ## Clone Commands
 
@@ -95,6 +96,7 @@ npm run dev
 
 - Add a new template as a new branch.
 - Update `TEMPLATE_INDEX.json` on `main` when adding or changing a branch.
+- Update `DECISION_MATRIX.json` when product-to-template selection changes.
 - Keep each template branch independently runnable.
 - Keep `main` free of template implementation source.
 - Do not merge template branches into `main`.

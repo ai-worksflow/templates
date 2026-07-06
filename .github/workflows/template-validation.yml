@@ -1,0 +1,123 @@
+name: Template Validation
+
+on:
+  push:
+    branches:
+      - main
+      - "*-template"
+  pull_request:
+    branches:
+      - main
+      - "*-template"
+
+jobs:
+  validate-main-index:
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate JSON indexes
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          required = [
+              "TEMPLATE_INDEX.json",
+              "TEMPLATE_INDEX.schema.json",
+              "TEMPLATE_MANIFEST.schema.json",
+              "DECISION_MATRIX.json",
+          ]
+          for item in required:
+              json.loads(Path(item).read_text())
+
+          index = json.loads(Path("TEMPLATE_INDEX.json").read_text())
+          branches = [template["branch"] for template in index["templates"]]
+          assert len(branches) == len(set(branches)), "duplicate template branches"
+          assert len(branches) >= 11, "expected backend and frontend template branches"
+          for template in index["templates"]:
+              assert template["validation"]["status"] == "ready", template["id"]
+          PY
+
+  validate-python-fastapi:
+    if: github.ref_name == 'python-fastapi-template'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate FastAPI template
+        run: |
+          python -m venv .venv
+          . .venv/bin/activate
+          pip install -e ".[dev]"
+          python -m compileall src tests
+          pytest
+          pip check
+
+  validate-python-django:
+    if: github.ref_name == 'python-django-template'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate Django template
+        run: |
+          python -m venv .venv
+          . .venv/bin/activate
+          pip install -r requirements/local.txt
+          python -m compileall config apps tests
+          python manage.py check --settings=config.settings.test
+          pip check
+
+  validate-go:
+    if: github.ref_name == 'go-gozero-template' || github.ref_name == 'go-kratos-template'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "stable"
+      - name: Validate Go template
+        run: |
+          go mod download
+          go test ./...
+          go mod verify
+
+  validate-node-backend:
+    if: github.ref_name == 'node-nestjs-template'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+      - name: Validate NestJS template
+        run: |
+          npm ci
+          npm test
+          npm run build
+          npm audit --omit=dev --audit-level=high --registry=https://registry.npmjs.org
+
+  validate-frontend:
+    if: github.ref_name == 'react-antd-template' || github.ref_name == 'react-mui-template' || github.ref_name == 'react-shadcn-template' || github.ref_name == 'vue-element-plus-template' || github.ref_name == 'vue-naive-ui-template' || github.ref_name == 'vanilla-shoelace-template'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+      - name: Validate frontend template
+        run: |
+          npm ci
+          npm test
+          npm run build
+          npm audit --omit=dev --audit-level=high --registry=https://registry.npmjs.org
