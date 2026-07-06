@@ -1,0 +1,82 @@
+{
+  "contract_version": "0.2.0",
+  "template_id": "node-nestjs-template",
+  "runtime": "nodejs",
+  "framework": "NestJS",
+  "profile_contract_version": "0.2.0",
+  "extension_points": {
+    "module_root": "src/{module}",
+    "domain": "src/{module}/domain",
+    "application": "src/{module}/application",
+    "ports": "src/{module}/ports",
+    "infrastructure": "src/{module}/infrastructure",
+    "interfaces": "src/{module}/interfaces",
+    "nestjs_module": "src/{module}/{module}.module.ts",
+    "app_module_registration": "src/app.module.ts",
+    "prisma_schema": "prisma/schema.prisma",
+    "tests": "test/{module}.e2e-spec.ts"
+  },
+  "module_layers": ["domain", "application", "ports", "infrastructure", "interfaces"],
+  "profiles": {
+    "traditional_web": {
+      "fit": "supported",
+      "runtime_role": "business_api_or_bff",
+      "modules": ["content", "workflow", "notification", "audit"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub"],
+      "implementation_order": ["content", "workflow", "audit", "notification"],
+      "events": ["content.published", "workflow.approved", "workflow.rejected", "notification.requested"],
+      "jobs": ["send_notification", "expire_pending_workflow", "audit_export"],
+      "data_boundaries": ["postgres", "redis_cache", "object_storage"],
+      "notes": ["Use controllers for API surfaces, guards for permissions, and application use cases for workflow transitions."]
+    },
+    "commerce": {
+      "fit": "supported",
+      "runtime_role": "commerce_bff_or_modular_api",
+      "modules": ["catalog", "pricing", "cart", "order", "payment", "inventory", "fulfillment"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub", "rate_limit"],
+      "implementation_order": ["catalog", "pricing", "inventory", "cart", "order", "payment", "fulfillment"],
+      "events": ["cart.checked_out", "order.created", "payment.authorized", "payment.failed", "inventory.reserved", "fulfillment.shipped"],
+      "jobs": ["payment_callback_reconcile", "inventory_reservation_expire", "order_timeout_cancel", "fulfillment_sync"],
+      "data_boundaries": ["postgres", "redis_cache", "message_queue", "payment_provider", "search_index"],
+      "notes": ["Keep provider SDKs in infrastructure and expose payment callback validation through application services."]
+    },
+    "video_platform": {
+      "fit": "supported",
+      "runtime_role": "video_bff_or_operations_api",
+      "modules": ["asset", "upload", "transcode", "playback", "entitlement", "moderation"],
+      "protocols": ["http", "realtime", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub", "rate_limit"],
+      "implementation_order": ["asset", "upload", "transcode", "playback", "entitlement", "moderation"],
+      "events": ["asset.created", "upload.completed", "transcode.requested", "transcode.completed", "playback.started", "moderation.flagged"],
+      "jobs": ["transcode_worker", "thumbnail_extract", "manifest_package", "cdn_purge", "moderation_scan"],
+      "data_boundaries": ["postgres", "object_storage", "message_queue", "cdn", "transcode_provider"],
+      "notes": ["Use this template for BFF, moderation, dashboards, and entitlement APIs; keep CPU-heavy processing outside Nest workers."]
+    },
+    "game_backend": {
+      "fit": "supported",
+      "runtime_role": "game_bff_or_operations_api",
+      "modules": ["player", "session", "matchmaking", "inventory", "economy", "leaderboard", "telemetry"],
+      "protocols": ["http", "realtime", "events"],
+      "middleware": ["request_id", "logging", "timing", "auth_stub", "rate_limit"],
+      "implementation_order": ["player", "inventory", "economy", "leaderboard", "session", "matchmaking", "telemetry"],
+      "events": ["session.created", "matchmaking.ticket_created", "matchmaking.matched", "inventory.granted", "economy.transaction_posted", "leaderboard.score_submitted"],
+      "jobs": ["matchmaking_tick", "session_timeout_sweep", "leaderboard_rollover", "telemetry_flush"],
+      "data_boundaries": ["redis_cache", "postgres", "message_queue", "analytics_sink"],
+      "notes": ["Use for game operations, account APIs, inventory/economy admin, and BFF surfaces; prefer Go for low-latency session loops."]
+    },
+    "saas_multitenant": {
+      "fit": "recommended",
+      "runtime_role": "modular_saas_backend",
+      "modules": ["tenant", "workspace", "permission", "subscription", "billing", "usage", "integration", "audit"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub", "rate_limit"],
+      "implementation_order": ["tenant", "workspace", "permission", "subscription", "billing", "usage", "integration", "audit"],
+      "events": ["tenant.created", "workspace.member_invited", "permission.role_changed", "subscription.changed", "usage.recorded", "billing.webhook_received"],
+      "jobs": ["usage_rollup", "invoice_sync", "webhook_delivery", "audit_export", "quota_refresh"],
+      "data_boundaries": ["postgres", "redis_cache", "message_queue", "billing_provider", "email_provider"],
+      "notes": ["Map each bounded context to a Nest module and enforce tenant context through guards/interceptors before repositories."]
+    }
+  }
+}

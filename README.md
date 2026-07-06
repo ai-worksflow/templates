@@ -29,4 +29,11 @@ src/common/                   Guards, interceptors, filters, config.
 prisma/                       Schema and migration/seed boundary.
 ```
 
-This template uses NestJS as the large-project runtime. Fastify-only templates remain available for smaller BFF/API services.
+## Profiles And Engineering Rules
+
+- Product profiles live in `profiles/index.json`.
+- Framework-specific engineering rules live in `docs/ENGINEERING_SPEC.md`.
+- Recommended profile: `saas_multitenant`.
+- Supported profiles: `traditional_web`, `commerce`, `video_platform`, `game_backend`.
+
+This template uses NestJS as the large-project runtime for modular TypeScript backends.

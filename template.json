@@ -2,8 +2,12 @@
   "id": "node-nestjs-template",
   "runtime": "nodejs",
   "framework": "NestJS",
-  "engineering_level": "advanced_template",
+  "engineering_level": "template",
   "upstreams": ["nestjs", "ack-nestjs-boilerplate", "clean-nest-prisma-pg", "nestjs-clean-architecture-boilerplate"],
+  "profile_manifest": "profiles/index.json",
+  "engineering_spec": "docs/ENGINEERING_SPEC.md",
+  "profiles": ["traditional_web", "commerce", "video_platform", "game_backend", "saas_multitenant"],
+  "recommended_profiles": ["saas_multitenant"],
   "entrypoint": "src/main.ts",
   "test": "npm test",
   "architecture": ["nestjs_modules", "clean_architecture", "prisma_ready", "rbac_ready"]
