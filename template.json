@@ -1,0 +1,14 @@
+{
+  "id": "vue-naive-ui-template",
+  "framework": "Vue",
+  "ui": "Naive UI",
+  "language": "TypeScript",
+  "build_tool": "Vite",
+  "profile_manifest": "profiles/index.json",
+  "engineering_spec": "docs/ENGINEERING_SPEC.md",
+  "recommended_profiles": ["saas_console", "media_dashboard"],
+  "supported_profiles": ["admin_console", "commerce_storefront", "game_portal", "content_site"],
+  "entrypoint": "src/main.ts",
+  "test": "npm test",
+  "build": "npm run build"
+}

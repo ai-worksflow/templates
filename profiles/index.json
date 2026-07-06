@@ -1,0 +1,22 @@
+{
+  "contract_version": "0.1.0",
+  "template_id": "vue-naive-ui-template",
+  "framework": "Vue",
+  "ui": "Naive UI",
+  "extension_points": {
+    "app_root": "src/app",
+    "page": "src/features/{feature}/{Feature}Page.vue",
+    "model": "src/features/{feature}/{feature}-model.ts",
+    "api_client": "src/shared/api/{resource}-client.ts",
+    "config": "src/shared/config/env.ts",
+    "test": "src/features/{feature}/{feature}-model.test.ts"
+  },
+  "profiles": {
+    "admin_console": { "fit": "supported", "pages": ["dashboard", "list_detail", "form"], "components": ["NLayout", "NMenu", "NDataTable", "NForm", "NModal"] },
+    "saas_console": { "fit": "recommended", "pages": ["overview", "workspace", "settings", "usage"], "components": ["NCard", "NGrid", "NProgress", "NTabs", "NForm"] },
+    "commerce_storefront": { "fit": "supported", "pages": ["catalog", "product_detail", "cart"], "components": ["NCard", "NGrid", "NButton", "NSteps"] },
+    "media_dashboard": { "fit": "recommended", "pages": ["asset_list", "upload", "jobs", "moderation"], "components": ["NUpload", "NProgress", "NTag", "NCard"] },
+    "game_portal": { "fit": "supported", "pages": ["profile", "inventory", "leaderboard"], "components": ["NCard", "NTag", "NGrid"] },
+    "content_site": { "fit": "supported", "pages": ["home", "article", "resources"], "components": ["NCard", "NButton", "NForm"] }
+  }
+}
