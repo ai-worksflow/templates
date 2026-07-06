@@ -1,0 +1,23 @@
+{
+  "contract_version": "0.1.0",
+  "template_id": "vanilla-shoelace-template",
+  "framework": "Vanilla TypeScript",
+  "ui": "Shoelace Web Components",
+  "extension_points": {
+    "app_root": "src/app",
+    "render_function": "src/app/render-app.ts",
+    "feature": "src/features/{feature}",
+    "model": "src/features/{feature}/{feature}-model.ts",
+    "api_client": "src/shared/api/{resource}-client.ts",
+    "config": "src/shared/config/env.ts",
+    "test": "src/features/{feature}/{feature}-model.test.ts"
+  },
+  "profiles": {
+    "admin_console": { "fit": "supported", "pages": ["dashboard", "list_detail", "form"], "components": ["sl-card", "sl-button", "sl-dialog", "sl-input", "sl-tab-group"] },
+    "saas_console": { "fit": "secondary", "pages": ["overview", "settings", "usage"], "components": ["sl-card", "sl-button", "sl-progress-bar", "sl-tab-group"] },
+    "commerce_storefront": { "fit": "supported", "pages": ["home", "catalog", "cart"], "components": ["sl-card", "sl-button", "sl-badge", "sl-alert"] },
+    "media_dashboard": { "fit": "supported", "pages": ["asset_list", "jobs", "preview"], "components": ["sl-card", "sl-progress-bar", "sl-tab-group", "sl-alert"] },
+    "game_portal": { "fit": "recommended", "pages": ["home", "profile", "inventory", "leaderboard"], "components": ["sl-card", "sl-badge", "sl-progress-bar", "sl-tab-group"] },
+    "content_site": { "fit": "recommended", "pages": ["home", "article", "resource_list", "contact"], "components": ["sl-card", "sl-button", "sl-alert", "sl-tab-group"] }
+  }
+}

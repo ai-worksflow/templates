@@ -1,0 +1,14 @@
+{
+  "id": "vanilla-shoelace-template",
+  "framework": "Vanilla TypeScript",
+  "ui": "Shoelace Web Components",
+  "language": "TypeScript",
+  "build_tool": "Vite",
+  "profile_manifest": "profiles/index.json",
+  "engineering_spec": "docs/ENGINEERING_SPEC.md",
+  "recommended_profiles": ["content_site", "game_portal"],
+  "supported_profiles": ["admin_console", "commerce_storefront", "media_dashboard"],
+  "entrypoint": "src/main.ts",
+  "test": "npm test",
+  "build": "npm run build"
+}
