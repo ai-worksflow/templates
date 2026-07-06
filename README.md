@@ -14,6 +14,13 @@ go test ./...
 go run ./cmd/server
 ```
 
+The HTTP bind address can be overridden for local or deployment environments:
+
+```bash
+HTTP_ADDR=127.0.0.1:8001 go run ./cmd/server
+PORT=8001 go run ./cmd/server
+```
+
 ## Structure
 
 ```text
