@@ -1,0 +1,14 @@
+{
+  "id": "react-mui-template",
+  "framework": "React",
+  "ui": "Material UI",
+  "language": "TypeScript",
+  "build_tool": "Vite",
+  "profile_manifest": "profiles/index.json",
+  "engineering_spec": "docs/ENGINEERING_SPEC.md",
+  "recommended_profiles": ["saas_console", "content_site"],
+  "supported_profiles": ["admin_console", "commerce_storefront", "media_dashboard", "game_portal"],
+  "entrypoint": "src/main.tsx",
+  "test": "npm test",
+  "build": "npm run build"
+}

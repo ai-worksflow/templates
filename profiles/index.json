@@ -1,0 +1,23 @@
+{
+  "contract_version": "0.1.0",
+  "template_id": "react-mui-template",
+  "framework": "React",
+  "ui": "Material UI",
+  "extension_points": {
+    "app_root": "src/app",
+    "page": "src/features/{feature}/{Feature}Page.tsx",
+    "model": "src/features/{feature}/{feature}-model.ts",
+    "component": "src/shared/ui/{Component}.tsx",
+    "api_client": "src/shared/api/{resource}-client.ts",
+    "config": "src/shared/config/env.ts",
+    "test": "src/features/{feature}/{feature}-model.test.ts"
+  },
+  "profiles": {
+    "admin_console": { "fit": "supported", "pages": ["dashboard", "list_detail", "create_edit_form", "audit_log"], "components": ["Drawer", "List", "DataGrid-ready table boundary", "Dialog", "Snackbar"] },
+    "saas_console": { "fit": "recommended", "pages": ["overview", "workspace", "settings", "billing", "usage"], "components": ["Drawer", "Card", "LinearProgress", "Tabs", "TextField"] },
+    "commerce_storefront": { "fit": "supported", "pages": ["home", "catalog", "product_detail", "cart", "checkout"], "components": ["Card", "Grid", "Button", "Stepper", "TextField"] },
+    "media_dashboard": { "fit": "supported", "pages": ["asset_list", "upload", "transcode_jobs"], "components": ["Card", "LinearProgress", "Chip", "Dialog"] },
+    "game_portal": { "fit": "supported", "pages": ["profile", "inventory", "leaderboard"], "components": ["Card", "Chip", "List", "Tabs"] },
+    "content_site": { "fit": "recommended", "pages": ["home", "article", "resource_list"], "components": ["Container", "Card", "Typography", "Button"] }
+  }
+}
