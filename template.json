@@ -2,8 +2,12 @@
   "id": "python-fastapi-template",
   "runtime": "python",
   "framework": "FastAPI",
-  "engineering_level": "advanced_template",
+  "engineering_level": "template",
   "upstreams": ["fastapi-full-stack", "fastapi-clean-example", "fastapi-best-architecture"],
+  "profile_manifest": "profiles/index.json",
+  "engineering_spec": "docs/ENGINEERING_SPEC.md",
+  "profiles": ["traditional_web", "commerce", "video_platform", "game_backend", "saas_multitenant"],
+  "recommended_profiles": ["video_platform", "saas_multitenant"],
   "entrypoint": "app.main.run:make_app",
   "test": "pytest",
   "architecture": ["clean_architecture", "cqrs", "unit_of_work", "ports_and_adapters"]

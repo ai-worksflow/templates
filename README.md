@@ -37,6 +37,14 @@ tests/                          Unit and API smoke tests.
 4. Put FastAPI route code under `api/routes`.
 5. Add migrations under `outbound/persistence_sqla/alembic`.
 
+## Profiles And Engineering Rules
+
+- Product profiles live in `profiles/index.json`.
+- Framework-specific engineering rules live in `docs/ENGINEERING_SPEC.md`.
+- Recommended profiles: `video_platform`, `saas_multitenant`.
+- Supported profiles: `traditional_web`, `commerce`.
+- Secondary profile: `game_backend`.
+
 ## Upstream Attribution
 
 See `UPSTREAM_LICENSES.md`.

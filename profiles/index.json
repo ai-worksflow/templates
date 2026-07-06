@@ -1,0 +1,82 @@
+{
+  "contract_version": "0.2.0",
+  "template_id": "python-fastapi-template",
+  "runtime": "python",
+  "framework": "FastAPI",
+  "profile_contract_version": "0.2.0",
+  "extension_points": {
+    "context_root": "src/app/contexts/{module}",
+    "domain": "src/app/contexts/{module}/domain",
+    "application": "src/app/contexts/{module}/application",
+    "ports": "src/app/contexts/{module}/ports",
+    "adapters": "src/app/contexts/{module}/adapters",
+    "http_route": "src/app/api/routes/{module}.py",
+    "composition_root": "src/app/main/ioc.py",
+    "app_router_registration": "src/app/main/run.py",
+    "migrations": "src/app/outbound/persistence_sqla/alembic",
+    "tests": "tests/test_{module}.py"
+  },
+  "module_layers": ["domain", "application", "ports", "adapters"],
+  "profiles": {
+    "traditional_web": {
+      "fit": "supported",
+      "runtime_role": "api_backend_for_business_workflows",
+      "modules": ["content", "workflow", "notification", "audit"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub"],
+      "implementation_order": ["content", "workflow", "audit", "notification"],
+      "events": ["content.published", "workflow.approved", "workflow.rejected", "notification.requested"],
+      "jobs": ["send_notification", "expire_pending_workflow", "audit_export"],
+      "data_boundaries": ["postgres", "redis_cache", "object_storage"],
+      "notes": ["Use FastAPI for API-first workflow systems; prefer python-django-template when Django admin/forms are primary."]
+    },
+    "commerce": {
+      "fit": "supported",
+      "runtime_role": "commerce_api_or_integration_service",
+      "modules": ["catalog", "pricing", "cart", "order", "payment", "inventory", "fulfillment"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub", "rate_limit"],
+      "implementation_order": ["catalog", "pricing", "inventory", "cart", "order", "payment", "fulfillment"],
+      "events": ["cart.checked_out", "order.created", "payment.authorized", "payment.failed", "inventory.reserved", "fulfillment.shipped"],
+      "jobs": ["payment_callback_reconcile", "inventory_reservation_expire", "order_timeout_cancel", "fulfillment_sync"],
+      "data_boundaries": ["postgres", "redis_cache", "message_queue", "payment_provider", "search_index"],
+      "notes": ["Model payment callbacks as idempotent application commands before adding provider adapters."]
+    },
+    "video_platform": {
+      "fit": "recommended",
+      "runtime_role": "video_workflow_and_processing_api",
+      "modules": ["asset", "upload", "transcode", "playback", "entitlement", "moderation"],
+      "protocols": ["http", "realtime", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub", "rate_limit"],
+      "implementation_order": ["asset", "upload", "transcode", "playback", "entitlement", "moderation"],
+      "events": ["asset.created", "upload.completed", "transcode.requested", "transcode.completed", "playback.started", "moderation.flagged"],
+      "jobs": ["transcode_worker", "thumbnail_extract", "manifest_package", "cdn_purge", "moderation_scan"],
+      "data_boundaries": ["postgres", "object_storage", "message_queue", "cdn", "transcode_provider"],
+      "notes": ["Keep transcode providers behind ports and expose job status through HTTP plus realtime events."]
+    },
+    "game_backend": {
+      "fit": "secondary",
+      "runtime_role": "game_ops_api_or_tooling_service",
+      "modules": ["player", "session", "matchmaking", "inventory", "economy", "leaderboard", "telemetry"],
+      "protocols": ["http", "realtime", "events"],
+      "middleware": ["request_id", "logging", "timing", "auth_stub", "rate_limit"],
+      "implementation_order": ["player", "inventory", "economy", "leaderboard", "session", "matchmaking", "telemetry"],
+      "events": ["session.created", "matchmaking.ticket_created", "matchmaking.matched", "inventory.granted", "economy.transaction_posted", "leaderboard.score_submitted"],
+      "jobs": ["matchmaking_tick", "session_timeout_sweep", "leaderboard_rollover", "telemetry_flush"],
+      "data_boundaries": ["redis_cache", "postgres", "message_queue", "analytics_sink"],
+      "notes": ["Use this for game operations and APIs; prefer Go templates for latency-sensitive core paths."]
+    },
+    "saas_multitenant": {
+      "fit": "recommended",
+      "runtime_role": "tenant_aware_api_service",
+      "modules": ["tenant", "workspace", "permission", "subscription", "billing", "usage", "integration", "audit"],
+      "protocols": ["http", "events"],
+      "middleware": ["request_id", "logging", "timing", "cors", "auth_stub", "rate_limit"],
+      "implementation_order": ["tenant", "workspace", "permission", "subscription", "billing", "usage", "integration", "audit"],
+      "events": ["tenant.created", "workspace.member_invited", "permission.role_changed", "subscription.changed", "usage.recorded", "billing.webhook_received"],
+      "jobs": ["usage_rollup", "invoice_sync", "webhook_delivery", "audit_export", "quota_refresh"],
+      "data_boundaries": ["postgres", "redis_cache", "message_queue", "billing_provider", "email_provider"],
+      "notes": ["Add tenant_id to application commands and repository ports before introducing concrete database adapters."]
+    }
+  }
+}
