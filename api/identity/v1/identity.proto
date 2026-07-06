@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package identity.v1;
+
+option go_package = "example.com/go-kratos-template/api/identity/v1;identityv1";
+
+service Identity {
+  rpc RegisterUser(RegisterUserRequest) returns (RegisterUserReply);
+}
+
+message RegisterUserRequest {
+  string email = 1;
+  string display_name = 2;
+}
+
+message RegisterUserReply {
+  string user_id = 1;
+  string email = 2;
+}

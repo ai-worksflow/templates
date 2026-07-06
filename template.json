@@ -1,0 +1,10 @@
+{
+  "id": "go-kratos-template",
+  "runtime": "go",
+  "framework": "Kratos",
+  "engineering_level": "advanced_template",
+  "upstreams": ["kratos"],
+  "entrypoint": "./cmd/server",
+  "test": "go test ./...",
+  "architecture": ["cloud_native_microservice", "transport_layer", "biz_data_service"]
+}
