@@ -85,7 +85,7 @@
   "lockfiles": [
     {
       "path": "go.sum",
-      "digest": "sha256:8d4da4a1cb16d312b8a827fba9331d8648d22ed3b356f7788482b1ee9672b989",
+      "digest": "sha256:505a5264ae5459e8a45e5ef782c320e2471d1eb25b419832124cc1a314bfebc6",
       "registry": "https://proxy.golang.org"
     }
   ],
