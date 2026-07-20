@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "template-manifest/v1",
+  "templateId": "react-shadcn-web",
+  "displayName": "React Shadcn Web",
+  "version": "0.2.0",
+  "services": [
+    {
+      "id": "web",
+      "kind": "web",
+      "rootPath": "."
+    }
+  ],
+  "toolchains": [
+    {
+      "name": "node",
+      "version": "22",
+      "image": "node:22-bookworm-slim@sha256:6c74791e557ce11fc957704f6d4fe134a7bc8d6f5ca4403205b2966bd488f6b3"
+    }
+  ],
+  "commands": {
+    "install": {
+      "workingDirectory": ".",
+      "argv": ["npm", "ci"]
+    },
+    "lint": {
+      "workingDirectory": ".",
+      "argv": ["npm", "run", "lint"]
+    },
+    "typecheck": {
+      "workingDirectory": ".",
+      "argv": ["npm", "run", "typecheck"]
+    },
+    "test": {
+      "workingDirectory": ".",
+      "argv": ["npm", "test"]
+    },
+    "build": {
+      "workingDirectory": ".",
+      "argv": ["npm", "run", "build"]
+    },
+    "start": {
+      "workingDirectory": ".",
+      "argv": ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "4173"]
+    }
+  },
+  "ports": [
+    {
+      "name": "web-http",
+      "serviceId": "web",
+      "number": 4173,
+      "protocol": "http",
+      "exposure": "preview"
+    }
+  ],
+  "healthChecks": [
+    {
+      "id": "web-ready",
+      "serviceId": "web",
+      "portName": "web-http",
+      "path": "/"
+    }
+  ],
+  "buildOutputs": [
+    {
+      "serviceId": "web",
+      "path": "dist"
+    }
+  ],
+  "extensionPaths": ["src"],
+  "protectedPaths": [
+    "Dockerfile",
+    "eslint.config.js",
+    "package-lock.json",
+    "package.json",
+    "worksflow-template-manifest.json"
+  ],
+  "environmentSchema": [
+    {
+      "name": "VITE_API_BASE_URL",
+      "required": false,
+      "secret": false,
+      "description": "Base URL used by the browser client for API requests.",
+      "default": "/api"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "package-lock.json",
+      "digest": "sha256:ad1dc11af1362e9c525a6f17daa7c01f58a57b161cd9d08279782658ec8bcf67",
+      "registry": "https://registry.npmjs.org"
+    }
+  ],
+  "profileDigest": "sha256:8cb66d11970804cf504902399a6557e9ed6aade0a881fed669aafe628ef3d1e1"
+}
