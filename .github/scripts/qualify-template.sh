@@ -87,13 +87,13 @@ validate() {
     (.lockfiles | length > 0) and
     (.profileDigest | test("^sha256:[0-9a-f]{64}$"))
   ' "$MANIFEST" > "$OUT_DIR/manifest-schema.log"
-  record_gate 'manifest_schema' "$(sha256_file "$MANIFEST")" "git:${GITHUB_REPOSITORY:-local}@${GITHUB_SHA:-local}:$MANIFEST"
+  record_gate 'manifest_schema' "$(sha256_file "$MANIFEST")" "https://github.com/${GITHUB_REPOSITORY:-ai-worksflow/templates}/blob/${GITHUB_SHA:-local}/$MANIFEST"
 
   git ls-tree -r --full-tree -z HEAD | sha256sum | awk '{print "sha256:" $1}' > "$OUT_DIR/source-tree-digest.txt"
-  record_gate 'source_identity' "$(< "$OUT_DIR/source-tree-digest.txt")" "git:${GITHUB_REPOSITORY:-local}@${GITHUB_SHA:-local}"
+  record_gate 'source_identity' "$(< "$OUT_DIR/source-tree-digest.txt")" "https://github.com/${GITHUB_REPOSITORY:-ai-worksflow/templates}/tree/${GITHUB_SHA:-local}"
 
   test -s LICENSE
-  record_gate 'license_spdx' "$(sha256_file LICENSE)" "git:${GITHUB_REPOSITORY:-local}@${GITHUB_SHA:-local}:LICENSE"
+  record_gate 'license_spdx' "$(sha256_file LICENSE)" "https://github.com/${GITHUB_REPOSITORY:-ai-worksflow/templates}/blob/${GITHUB_SHA:-local}/LICENSE"
 
   while IFS=$'\t' read -r path expected_digest; do
     test -f "$path"
@@ -104,7 +104,7 @@ validate() {
     fi
   done < <(jq -er '.lockfiles[] | [.path, .digest] | @tsv' "$MANIFEST")
   jq -c '.lockfiles' "$MANIFEST" > "$OUT_DIR/dependency-lock.log"
-  record_gate 'dependency_lock' "$(sha256_file "$OUT_DIR/dependency-lock.log")" "git:${GITHUB_REPOSITORY:-local}@${GITHUB_SHA:-local}:locks"
+  record_gate 'dependency_lock' "$(sha256_file "$OUT_DIR/dependency-lock.log")" "urn:worksflow:git:${GITHUB_REPOSITORY:-local}:${GITHUB_SHA:-local}:locks"
 
   printf '%s\n' 'ghcr.io/ai-worksflow/templates' > "$OUT_DIR/registry-policy.log"
 
@@ -142,7 +142,7 @@ validate() {
   done
   docker rm -f "$container_id" >/dev/null
   trap - RETURN
-  record_gate 'start_health' "$(sha256_file "$OUT_DIR/health-response.txt")" "http://container${health_path}"
+  record_gate 'start_health' "$(sha256_file "$OUT_DIR/health-response.txt")" "urn:worksflow:container-health:${GITHUB_RUN_ID:-local}:${service_id}"
 
   jq -e --arg service "$service_id" --argjson port "$port" '
     any(.services[]; .id == $service) and
@@ -151,7 +151,7 @@ validate() {
     all(.protectedPaths[]; length > 0) and
     all(.extensionPaths[]; length > 0)
   ' "$MANIFEST" > "$OUT_DIR/contract-smoke.log"
-  record_gate 'contract_smoke' "$(sha256_file "$OUT_DIR/contract-smoke.log")" "git:${GITHUB_REPOSITORY:-local}@${GITHUB_SHA:-local}:contract"
+  record_gate 'contract_smoke' "$(sha256_file "$OUT_DIR/contract-smoke.log")" "urn:worksflow:git:${GITHUB_REPOSITORY:-local}:${GITHUB_SHA:-local}:contract"
 
   docker run --rm \
     --user "$(id -u):$(id -g)" \
@@ -261,8 +261,8 @@ publish() {
   regctl image mod "$image_tag" --to-oci --replace
   image_digest="$(regctl manifest head "$image_tag" --require-digest)"
   image_reference="${repository}@${image_digest}"
-  record_gate 'registry_policy' "$(sha256_file "$OUT_DIR/registry-policy.log")" "$image_reference"
-  record_gate 'container_build' "$image_digest" "$image_reference"
+  record_gate 'registry_policy' "$(sha256_file "$OUT_DIR/registry-policy.log")" "oci:$image_reference"
+  record_gate 'container_build' "$image_digest" "oci:$image_reference"
 
   jq -n \
     --arg name "$image_reference" \
@@ -288,7 +288,7 @@ publish() {
     --arg sourceCommit "$GITHUB_SHA" \
     '{schemaVersion:"worksflow-template-qualification-refs/v1",sourceCommit:$sourceCommit,imageReference:$imageReference,referrerReference:$referrerReference}' \
     > "$OUT_DIR/registry-refs.json"
-  record_gate 'sbom' "$(sha256_file "$OUT_DIR/sbom.intoto.json")" "$sbom_reference"
+  record_gate 'sbom' "$(sha256_file "$OUT_DIR/sbom.intoto.json")" "oci:$sbom_reference"
   jq -s 'sort_by(.gate)' "$OUT_DIR/gates.ndjson" > "$OUT_DIR/gates.json"
   docker logout ghcr.io >/dev/null
 }
