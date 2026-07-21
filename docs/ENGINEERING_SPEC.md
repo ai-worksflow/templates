@@ -50,6 +50,9 @@ This template is for cloud-native Go microservices using Kratos transport, middl
 - Repositories are defined by biz needs, not database table shape.
 - Data adapters own SQL/Redis/broker/provider clients and transactions.
 - Config changes require typed config updates and `configs/config.yaml` examples.
+- PostgreSQL-backed profiles use the protected `pgx` baseline; credentials are supplied through `DATABASE_URL` and never committed.
+- Password credentials use `x/crypto` password hashing and must never be stored or logged in plaintext.
+- Local media paths are development or single-node adapters; production deployments should mount durable storage or use object storage.
 - Message queues, object storage, CDN, payment, and analytics providers stay under `internal/data`.
 - Multi-service workflows must rely on idempotent commands and versioned events.
 
