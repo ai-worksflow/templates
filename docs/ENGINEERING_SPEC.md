@@ -28,4 +28,6 @@ Use this template when local UI component source should be part of the applicati
 
 - Unit test feature model logic.
 - Add DOM tests for primitives before heavy reuse.
+- Put production browser journeys under `e2e/` and keep them deterministic against a declared `PLAYWRIGHT_BASE_URL`.
+- Browser verification must cover desktop and mobile entry paths, API failures, and persisted state for state-changing products.
 - Build must pass `npm run build`.
