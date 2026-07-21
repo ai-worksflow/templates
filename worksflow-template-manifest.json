@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "template-manifest/v1",
+  "templateId": "react-shadcn-web",
+  "displayName": "React Shadcn Web",
+  "version": "0.3.0",
+  "services": [
+    {
+      "id": "web",
+      "kind": "web",
+      "rootPath": "."
+    }
+  ],
+  "toolchains": [
+    {
+      "name": "node",
+      "version": "22",
+      "image": "node:22-bookworm-slim@sha256:6c74791e557ce11fc957704f6d4fe134a7bc8d6f5ca4403205b2966bd488f6b3"
+    }
+  ],
+  "commands": {
+    "install": {
+      "workingDirectory": ".",
+      "argv": ["npm", "ci"]
+    },
+    "lint": {
+      "workingDirectory": ".",
+      "argv": ["npm", "run", "lint"]
+    },
+    "typecheck": {
+      "workingDirectory": ".",
+      "argv": ["npm", "run", "typecheck"]
+    },
+    "test": {
+      "workingDirectory": ".",
+      "argv": ["npm", "test"]
+    },
+    "build": {
+      "workingDirectory": ".",
+      "argv": ["npm", "run", "build"]
+    },
+    "start": {
+      "workingDirectory": ".",
+      "argv": ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "4173"]
+    }
+  },
+  "ports": [
+    {
+      "name": "web-http",
+      "serviceId": "web",
+      "number": 4173,
+      "protocol": "http",
+      "exposure": "preview"
+    }
+  ],
+  "healthChecks": [
+    {
+      "id": "web-ready",
+      "serviceId": "web",
+      "portName": "web-http",
+      "path": "/"
+    }
+  ],
+  "buildOutputs": [
+    {
+      "serviceId": "web",
+      "path": "dist"
+    }
+  ],
+  "extensionPaths": ["src", "e2e", "playwright.config.ts", "vite.config.ts"],
+  "protectedPaths": [
+    "Dockerfile",
+    "eslint.config.js",
+    "nginx.conf",
+    "package-lock.json",
+    "package.json",
+    "worksflow-template-manifest.json"
+  ],
+  "environmentSchema": [
+    {
+      "name": "VITE_API_BASE_URL",
+      "required": false,
+      "secret": false,
+      "description": "Base URL used by the browser client for API requests.",
+      "default": "/api"
+    }
+  ],
+  "lockfiles": [
+    {
+      "path": "package-lock.json",
+      "digest": "sha256:a0263b9a315c55d062b679b8f3db47aadf3009c9f7f686d70401c802a1fb5049",
+      "registry": "https://registry.npmjs.org"
+    }
+  ],
+  "profileDigest": "sha256:8cb66d11970804cf504902399a6557e9ed6aade0a881fed669aafe628ef3d1e1"
+}
