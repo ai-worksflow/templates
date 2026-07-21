@@ -43,3 +43,9 @@ configs/           Runtime configs.
 - Secondary profile: `traditional_web`.
 
 This template keeps Kratos as a framework dependency and leaves protobuf code generation as an explicit next step for real services.
+
+The protected dependency baseline also includes `pgx` and `x/crypto`, so
+profiles that declare PostgreSQL persistence and password authentication can be
+implemented entirely through the documented extension paths. The production
+container runs as UID/GID `10001` and expects writable media or temporary paths
+to be provided explicitly by the deployment.

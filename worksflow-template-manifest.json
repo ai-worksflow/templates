@@ -2,7 +2,7 @@
   "schemaVersion": "template-manifest/v1",
   "templateId": "go-kratos-api",
   "displayName": "Go Kratos API",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "services": [
     {
       "id": "api",
@@ -80,12 +80,32 @@
       "secret": false,
       "description": "HTTP port exposed by the Kratos service.",
       "default": "8000"
+    },
+    {
+      "name": "DATABASE_URL",
+      "required": false,
+      "secret": true,
+      "description": "PostgreSQL connection URL used by persistent product profiles."
+    },
+    {
+      "name": "COOKIE_SECURE",
+      "required": false,
+      "secret": false,
+      "description": "Require Secure session cookies when the public endpoint uses HTTPS.",
+      "default": "false"
+    },
+    {
+      "name": "MEDIA_ROOT",
+      "required": false,
+      "secret": false,
+      "description": "Writable directory used for local media objects before an object-storage adapter is configured.",
+      "default": "/tmp/worksflow-media"
     }
   ],
   "lockfiles": [
     {
       "path": "go.sum",
-      "digest": "sha256:505a5264ae5459e8a45e5ef782c320e2471d1eb25b419832124cc1a314bfebc6",
+      "digest": "sha256:a448dcc54d12f963d3d96a4b7fb0963d7b613d8058ba48131ce26bf8358cc0d5",
       "registry": "https://proxy.golang.org"
     }
   ],
